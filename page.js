@@ -71,27 +71,23 @@ function setRgb3Bit(context, size, x, y, bias) {
 	context.fillRect(x * size, y * size, size, size);
 }
 
-function setCustom(context, size, x, y) {
-  const customcolour1 = document.getElementById("customcolour1").value;
-  const customcolour2 = document.getElementById("customcolour2").value;
-  const customcolour3 = document.getElementById("customcolour3").value;
-  const customcolour4 = document.getElementById("customcolour4").value;
-
-  context.fillStyle = randArray([
-    customcolour1,
-    customcolour2,
-    customcolour3,
-    customcolour4,
-  ]);
-
-  context.fillRect(x * size, y * size, size, size);
+function setCustom(context, size, x, y, amount) {
+	var colours = []
+	for (var a = 1; a <= amount; a++) {
+		colours.push(document.getElementById('customcolour'+a).value);
+	}
+	context.fillStyle = randArray(colours);
+	context.fillRect(x * size, y * size, size, size);
 }
 
 function handleColours(colours, context, size, x, y, bias) {
 	switch (colours) {
-		case "custom":
-      		setCustom(context, size, x, y);
-      		break;
+		case 'custom_2':
+		case 'custom_3':
+		case 'custom_4':
+		case 'custom_5':
+			setCustom(context, size, x, y, +colours.split('_')[1]);
+			break;
 		case 'monochrome':
 			setMonochrome(context, size, x, y, bias);
 			break;
@@ -151,18 +147,22 @@ function stats() {
 	d3.select('#generate').style('color', uhoh ? 'red' : 'black');
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const colourSelect = document.getElementById("colours");
-  const customcolourRow = document.getElementById("custom-colour-row");
-  const biasRow = document.getElementById("bias-row");
-
-  colourSelect.addEventListener("change", () => {
-	customcolourRow.style.display =
-      colourSelect.value === "custom" ? "table-row" : "none";
-    biasRow.style.display =
-      colourSelect.value === "custom" ? "none" : "table-row";
-  });
-});
+function changedColourType() {
+	const colourSelect = document.getElementById("colours");
+	const customcolourRow = document.getElementById("custom-colour-row");
+	const biasRow = document.getElementById("bias-row");
+	customcolourRow.style.display = colourSelect.value.startsWith('custom') ? "table-row" : "none";
+	biasRow.style.display = colourSelect.value.startsWith('custom') ? "none" : "table-row";
+	if (colourSelect.value.startsWith('custom')) {
+		var amount = colourSelect.value.split('_')[1]
+		console.log(amount)
+		for (var a = 1; a <= 5; a++) {
+			var control = document.getElementById('customcolour' + a);
+			control.style.display = a <= amount ? null : 'none';
+		}
+	}
+}
 
 stats();
 generate();
+changedColourType();
