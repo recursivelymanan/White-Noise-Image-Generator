@@ -49,6 +49,8 @@
 					<th>Colours:</th>
 					<td>
 						<select id="colours">
+							<option value="custom">Custom</option>
+							<option disabled>――――――</option>
 							<option value="monochrome">Monochrome</option>
 							<option value="greyscale">Greyscale</option>
 							<option disabled>――――――</option>
@@ -68,7 +70,16 @@
 					</select>
 					</td>
 				</tr>
-				<tr>
+				<tr id="custom-colour-row" style="display: none">
+					<th>Custom colours: </th>
+					<td>
+						<input type="color" id="customcolour1" value="#ff0000">
+						<input type="color" id="customcolour2" value="#ff0000">
+						<input type="color" id="customcolour3" value="#ff0000">
+						<input type="color" id="customcolour4" value="#ff0000">
+					</td>
+				</tr>
+				<tr id="bias-row" style="display: table-row">
 					<th>Bias:</th>
 					<td>
 						<select id="bias">

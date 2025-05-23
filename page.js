@@ -71,8 +71,27 @@ function setRgb3Bit(context, size, x, y, bias) {
 	context.fillRect(x * size, y * size, size, size);
 }
 
+function setCustom(context, size, x, y) {
+  const customcolour1 = document.getElementById("customcolour1").value;
+  const customcolour2 = document.getElementById("customcolour2").value;
+  const customcolour3 = document.getElementById("customcolour3").value;
+  const customcolour4 = document.getElementById("customcolour4").value;
+
+  context.fillStyle = randArray([
+    customcolour1,
+    customcolour2,
+    customcolour3,
+    customcolour4,
+  ]);
+
+  context.fillRect(x * size, y * size, size, size);
+}
+
 function handleColours(colours, context, size, x, y, bias) {
 	switch (colours) {
+		case "custom":
+      		setCustom(context, size, x, y);
+      		break;
 		case 'monochrome':
 			setMonochrome(context, size, x, y, bias);
 			break;
@@ -131,6 +150,19 @@ function stats() {
 	d3.select('#warning').style('display', uhoh ? 'inline' : 'none');
 	d3.select('#generate').style('color', uhoh ? 'red' : 'black');
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const colourSelect = document.getElementById("colours");
+  const customcolourRow = document.getElementById("custom-colour-row");
+  const biasRow = document.getElementById("bias-row");
+
+  colourSelect.addEventListener("change", () => {
+	customcolourRow.style.display =
+      colourSelect.value === "custom" ? "table-row" : "none";
+    biasRow.style.display =
+      colourSelect.value === "custom" ? "none" : "table-row";
+  });
+});
 
 stats();
 generate();
